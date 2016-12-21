@@ -1,3 +1,113 @@
 <h1>
-  {{title}}
+  Address Book
 </h1>
+<div class="row">
+    <div class="col-xs-6">
+        <button class="btn btn-danger lower" (click)="changeState('add')">Add Contact</button>
+    </div>
+    <div class="col-xs-6">
+        <label>Filter Category</label>
+        <select class="form-control" (change)="filterCategory(filteredCategory.value)" #filteredCategory>
+            <option value="null">Select</option>
+            <option *ngFor="let type of types" value="{{type.name}}">{{type.name}}</option>
+        </select>
+    </div>
+</div>
+
+<!-- Add Contact -->
+<div *ngIf="appState == 'add'" class="row alert alert-success lower">
+    <div class="col-xs-12">
+        <h3>Add Contact</h3>
+        <form (submit)="addBusiness(name.value, phone.value, type.value, isFavorite)">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" #name>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" class="form-control" #phone>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control" #type>
+                    <option value="null">Select</option>
+                    <option *ngFor="let type of types" value="{{type.name}}">{{type.name}}</option>
+                </select>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" (click)="setFav()"> Mark as Favorite
+                </label>
+            </div>
+            <button type="submit" class="btn btn-default">Add Contact</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Form -->
+<div *ngIf="appState == 'edit'" class="row alert alert-success lower">
+    <div class="col-xs-12">
+        <h3>Edit Contact</h3>
+        <form (submit)="updateContact()">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" [(ngModel)]="activeName" name="activeName">
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" class="form-control" [(ngModel)]="activePhone" name="activePhone">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control" [(ngModel)]="activeType" name="activeType">
+                    <option value="null">Select</option>
+                    <option *ngFor="let type of types" value="{{type.name}}">{{type.name}}</option>
+                </select>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" (click)="setFav()" [(ngModel)]="activeIsFav" name="activeIsFav"> Mark as Favorite
+                </label>
+            </div>
+            <button type="submit" class="btn btn-default">Edit Contact</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let contact of contacts">
+                <div class="pull-left">
+                    <h4><b>{{contact.name}}</b></h4>
+                    {{contact.phone}}
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-default" (click)="changeState('extend', contact.$key)">More</button>
+                    <button class="btn btn-primary" (click)="showEdit(contact)">Edit</button>
+                    <button class="btn btn-info" (click)="deleteContact(contact.$key)">Delete</button>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div *ngIf="appState == 'extend'">
+    <div class="row">
+        <div class="col-xs-12">
+            <button class="btn btn-warning" (click)="changeState('default')">Go Back</button>
+        </div>
+    </div>
+    <div class="row" *ngFor="let contact of contacts">
+        <div class="col-xs-12" *ngIf="contact.$key === activeKey">
+            <h3>{{contact.name}}</h3>
+            <p>Phone number: {{contact.phone}}</p>
+            <p>Phone type: {{contact.type}}</p>
+            <p>Favorite: {{contact.isFavorite}}</p>
+        </div>
+    </div>
+</div>
+
+
+<navbar></navbar>
