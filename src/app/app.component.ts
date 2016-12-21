@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
         };
         console.log(newContact);
         this.firebaseService.addContact(newContact);
-        this.changeState('default');
+        /*this.changeState('default');*/
     }
     
     showEdit(contact){
@@ -81,11 +81,11 @@ export class AppComponent implements OnInit {
             isFavorite:this.activeIsFav
         }
         this.firebaseService.updateContact(this.activeKey, updContact);
-        this.changeState('default');
+        /*this.changeState('default');*/
     }
     
     deleteContact(key){
         this.firebaseService.deleteContact(key);
-        this.changeState('default');
+        /*this.changeState('default');*/
     }
 }
